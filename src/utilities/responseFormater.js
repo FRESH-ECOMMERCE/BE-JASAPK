@@ -10,7 +10,7 @@ exports.ResponseData = {
             errorMessage: message,
             data: null,
             next: null,
-            version: { code: configs_1.CONFIG.appVersion, name: configs_1.CONFIG.appSemantic }
+            version: { code: configs_1.appConfigs.app.appVersion }
         };
     },
     success: (data = null, next = null) => {
@@ -20,7 +20,7 @@ exports.ResponseData = {
             errorMessage: null,
             data,
             next,
-            version: { code: configs_1.CONFIG.appVersion, name: configs_1.CONFIG.appSemantic }
+            version: { code: configs_1.appConfigs.app.appVersion }
         };
     }
 };

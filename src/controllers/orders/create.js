@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createOrder = void 0;
 const http_status_codes_1 = require("http-status-codes");
@@ -13,7 +10,7 @@ const products_1 = require("../../models/products");
 const sequelize_1 = require("sequelize");
 const address_1 = require("../../models/address");
 const carts_1 = require("../../models/carts");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const requestHandler_1 = require("../../utilities/requestHandler");
 const createOrder = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -22,7 +19,6 @@ const createOrder = async (req, res) => {
     });
     if (emptyField.length > 0) {
         const message = `invalid request parameter! require (${emptyField})`;
-        logger_1.default.error(message);
         const response = response_1.ResponseData.error(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
@@ -35,7 +31,6 @@ const createOrder = async (req, res) => {
         });
         if (address == null) {
             const message = 'alamat pengiriman tidak ditemukan! pastikan anda sudah menambahkan detail alamat pengiriman';
-            logger_1.default.error(message);
             const response = response_1.ResponseData.error(message);
             return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(response);
         }
@@ -66,11 +61,8 @@ const createOrder = async (req, res) => {
         response.data = result;
         return res.status(http_status_codes_1.StatusCodes.CREATED).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.createOrder = createOrder;

@@ -6,6 +6,7 @@ const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const notifications_1 = require("../../models/notifications");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const removeNofication = async (req, res) => {
     const requestQuery = req.query;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -35,10 +36,8 @@ const removeNofication = async (req, res) => {
         response.data = { message: 'success' };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.removeNofication = removeNofication;

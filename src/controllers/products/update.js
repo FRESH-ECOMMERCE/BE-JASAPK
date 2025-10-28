@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProduct = void 0;
 const http_status_codes_1 = require("http-status-codes");
@@ -9,7 +6,7 @@ const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const products_1 = require("../../models/products");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const requestHandler_1 = require("../../utilities/requestHandler");
 const updateProduct = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -18,7 +15,6 @@ const updateProduct = async (req, res) => {
     });
     if (emptyField.length > 0) {
         const message = `invalid request parameter! require (${emptyField})`;
-        logger_1.default.error(message);
         const response = response_1.ResponseData.error(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
@@ -47,23 +43,8 @@ const updateProduct = async (req, res) => {
             ...(requestBody.productPrice !== null && {
                 productPrice: requestBody.productPrice
             }),
-            ...(requestBody.productCategoryId1.length > 0 && {
-                productCategoryId1: requestBody.productCategoryId1
-            }),
-            ...(requestBody.productCategoryId2.length > 0 && {
-                productCategoryId2: requestBody.productCategoryId2
-            }),
-            ...(requestBody.productCategoryId3.length > 0 && {
-                productCategoryId3: requestBody.productCategoryId3
-            }),
-            ...(requestBody.productCondition.length > 0 && {
-                productCondition: requestBody.productCondition
-            }),
-            ...(requestBody.productColors.length > 0 && {
-                productColors: requestBody.productColors
-            }),
-            ...(requestBody.productSizes.length > 0 && {
-                productSizes: requestBody.productSizes
+            ...(requestBody.productCategoryId.length > 0 && {
+                productCategoryId: requestBody.productCategoryId
             })
         };
         await products_1.ProductModel.update(newData, {
@@ -76,11 +57,8 @@ const updateProduct = async (req, res) => {
         response.data = { message: 'success' };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.updateProduct = updateProduct;

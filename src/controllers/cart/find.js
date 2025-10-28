@@ -1,7 +1,4 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findDetailCart = exports.findAllCart = void 0;
 const http_status_codes_1 = require("http-status-codes");
@@ -11,7 +8,7 @@ const pagination_1 = require("../../utilities/pagination");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const carts_1 = require("../../models/carts");
 const products_1 = require("../../models/products");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const requestHandler_1 = require("../../utilities/requestHandler");
 const findAllCart = async (req, res) => {
     try {
         const page = new pagination_1.Pagination(parseInt(req.query.page) ?? 0, parseInt(req.query.size) ?? 10);
@@ -38,11 +35,8 @@ const findAllCart = async (req, res) => {
         response.data = page.data(result);
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findAllCart = findAllCart;
@@ -79,10 +73,8 @@ const findDetailCart = async (req, res) => {
         response.data = result;
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findDetailCart = findDetailCart;

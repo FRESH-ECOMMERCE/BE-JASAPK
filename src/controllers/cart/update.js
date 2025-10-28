@@ -9,7 +9,8 @@ const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const carts_1 = require("../../models/carts");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const logs_1 = __importDefault(require("../../logs"));
+const requestHandler_1 = require("../../utilities/requestHandler");
 const updateCart = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -18,7 +19,7 @@ const updateCart = async (req, res) => {
     });
     if (emptyField.length > 0) {
         const message = `invalid request parameter! require (${emptyField})`;
-        logger_1.default.error(message);
+        logs_1.default.error(message);
         const response = response_1.ResponseData.error(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
@@ -55,11 +56,8 @@ const updateCart = async (req, res) => {
         response.data = { message: 'success' };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.updateCart = updateCart;

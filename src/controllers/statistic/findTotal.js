@@ -7,6 +7,7 @@ const sequelize_1 = require("sequelize");
 const products_1 = require("../../models/products");
 const orders_1 = require("../../models/orders");
 const user_1 = require("../../models/user");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const findTotal = async (req, res) => {
     try {
         const totalProduct = await products_1.ProductModel.count({
@@ -57,10 +58,8 @@ const findTotal = async (req, res) => {
         };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findTotal = findTotal;

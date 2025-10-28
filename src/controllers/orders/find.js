@@ -6,11 +6,11 @@ const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
 const pagination_1 = require("../../utilities/pagination");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const log_1 = require("../../utilities/log");
 const orders_1 = require("../../models/orders");
 const products_1 = require("../../models/products");
 const user_1 = require("../../models/user");
 const address_1 = require("../../models/address");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const findAllOrder = async (req, res) => {
     try {
         const user = await user_1.UserModel.findOne({
@@ -54,9 +54,7 @@ const findAllOrder = async (req, res) => {
                         'productImages',
                         'productDiscount',
                         'productTotalSale',
-                        'productStock',
-                        'productColors',
-                        'productSizes'
+                        'productStock'
                     ]
                 }
             ],
@@ -70,11 +68,8 @@ const findAllOrder = async (req, res) => {
         response.data = page.data(result);
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        log_1.CONSOLE.error(error.message);
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findAllOrder = findAllOrder;
@@ -120,10 +115,8 @@ const findDetailOrder = async (req, res) => {
         response.data = result;
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findDetailOrder = findDetailOrder;

@@ -6,10 +6,10 @@ const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
 const pagination_1 = require("../../utilities/pagination");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const log_1 = require("../../utilities/log");
 const transactions_1 = require("../../models/transactions");
 const user_1 = require("../../models/user");
 const orders_1 = require("../../models/orders");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const findAllTransaction = async (req, res) => {
     try {
         const userRole = await user_1.UserModel.findOne({
@@ -46,11 +46,8 @@ const findAllTransaction = async (req, res) => {
         response.data = page.data(result);
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        log_1.CONSOLE.error(error.message);
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findAllTransaction = findAllTransaction;
@@ -88,10 +85,8 @@ const findDetailTransaction = async (req, res) => {
         response.data = result;
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.findDetailTransaction = findDetailTransaction;

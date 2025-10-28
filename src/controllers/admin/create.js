@@ -11,7 +11,8 @@ const user_1 = require("../../models/user");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const scure_password_1 = require("../../utilities/scure_password");
 const uuid_1 = require("uuid");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const logs_1 = __importDefault(require("../../logs"));
+const requestHandler_1 = require("../../utilities/requestHandler");
 const createAdmin = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -20,7 +21,7 @@ const createAdmin = async (req, res) => {
     });
     if (emptyField.length > 0) {
         const message = `invalid request parameter! require (${emptyField})`;
-        logger_1.default.error(message);
+        logs_1.default.error(message);
         const response = response_1.ResponseData.error(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
@@ -44,11 +45,8 @@ const createAdmin = async (req, res) => {
         response.data = { message: 'success' };
         return res.status(http_status_codes_1.StatusCodes.CREATED).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.createAdmin = createAdmin;

@@ -1,21 +1,12 @@
 "use strict";
-/* eslint-disable @typescript-eslint/promise-function-async */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.waBlasRouter = void 0;
-const express_1 = __importDefault(require("express"));
+const express_1 = require("express");
 const middlewares_1 = require("../../middlewares");
 const waBlass_1 = require("../../controllers/waBlass");
-const waBlasRouter = (app) => {
-    const router = express_1.default.Router();
-    app.use('/api/v1/wa-blas', middlewares_1.middleware.useAuthorization, router);
-    router.post('/send-message', (req, res) => waBlass_1.waBlasController.send(req, res));
-    router.get('/history', (req, res) => waBlass_1.waBlasController.findAllHistory(req, res));
-    router.get('/history/detail/:waBlasHistoryId', (req, res) => waBlass_1.waBlasController.findDetailHistory(req, res));
-    router.delete('/', async (req, res) => await waBlass_1.waBlasController.removeWablasHistory(req, res));
-};
-exports.waBlasRouter = waBlasRouter;
+const WablasRoute = (0, express_1.Router)();
+WablasRoute.use(middlewares_1.MiddleWares.authorization);
+WablasRoute.post('/send-message', waBlass_1.WaBlasController.send);
+WablasRoute.get('/history', waBlass_1.WaBlasController.findAllHistory);
+WablasRoute.get('/history/detail/:waBlasHistoryId', waBlass_1.WaBlasController.findDetailHistory);
+WablasRoute.delete('/', waBlass_1.WaBlasController.removeWablasHistory);
+exports.default = WablasRoute;

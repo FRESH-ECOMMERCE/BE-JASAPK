@@ -9,10 +9,10 @@ const responseFormater_1 = require("../../utilities/responseFormater");
 const sequelize_1 = require("sequelize");
 const validateRequest_1 = require("../../utilities/validateRequest");
 const scure_password_1 = require("../../utilities/scure_password");
-const logger_1 = __importDefault(require("../../utilities/logger"));
 const user_1 = require("../../models/user");
 const handleValidaionError_1 = __importDefault(require("../../utilities/handleValidaionError"));
 const userSchema_1 = require("../../validations/userSchema");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const updatePassword = async (req, res) => {
     const { error, value } = (0, validateRequest_1.validateRequest)(userSchema_1.userUpdatePasswordSchema, req.body);
     if (error != null)
@@ -28,7 +28,6 @@ const updatePassword = async (req, res) => {
         });
         if (user == null) {
             const message = 'User not found!';
-            logger_1.default.info('Attempt to update non-existing user');
             return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(responseFormater_1.ResponseData.error(message));
         }
         const updatedData = {
@@ -40,14 +39,11 @@ const updatePassword = async (req, res) => {
                 userWhatsAppNumber: { [sequelize_1.Op.eq]: userWhatsAppNumber }
             }
         });
-        logger_1.default.info('Password updated successfully');
         const response = responseFormater_1.ResponseData.success();
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `Unable to process request! Error: ${error.message}`;
-        logger_1.default.error(message, { stack: error.stack });
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(responseFormater_1.ResponseData.error(message));
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.updatePassword = updatePassword;

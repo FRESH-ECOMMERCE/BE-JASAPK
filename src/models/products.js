@@ -5,9 +5,7 @@ exports.ProductModel = void 0;
 const sequelize_1 = require("sequelize");
 const _1 = require(".");
 const zygote_1 = require("./zygote");
-const category3_1 = require("./category3");
-const category2_1 = require("./category2");
-const category1_1 = require("./category1");
+const categories_1 = require("./categories");
 exports.ProductModel = _1.sequelize.define('products', {
     ...zygote_1.ZygoteModel,
     productId: {
@@ -20,7 +18,7 @@ exports.ProductModel = _1.sequelize.define('products', {
         allowNull: false
     },
     productImages: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.JSON,
         allowNull: false
     },
     productDescription: {
@@ -31,15 +29,11 @@ exports.ProductModel = _1.sequelize.define('products', {
         type: sequelize_1.DataTypes.DECIMAL,
         allowNull: false
     },
-    productCategoryId1: {
+    productCategoryId: {
         type: sequelize_1.DataTypes.STRING(100),
         allowNull: false
     },
-    productCategoryId2: {
-        type: sequelize_1.DataTypes.STRING(100),
-        allowNull: false
-    },
-    productCategoryId3: {
+    productCode: {
         type: sequelize_1.DataTypes.STRING(100),
         allowNull: false
     },
@@ -53,30 +47,15 @@ exports.ProductModel = _1.sequelize.define('products', {
         allowNull: false,
         defaultValue: 0
     },
-    productCondition: {
-        type: sequelize_1.DataTypes.ENUM('Baru', 'Bekas'),
-        allowNull: true,
-        defaultValue: 'Baru'
-    },
     productWeight: {
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         defaultValue: 0
     },
     productDiscount: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0
-    },
-    productColors: {
-        type: sequelize_1.DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: null
-    },
-    productSizes: {
-        type: sequelize_1.DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: null
     }
 }, {
     ..._1.sequelize,
@@ -88,15 +67,7 @@ exports.ProductModel = _1.sequelize.define('products', {
     freezeTableName: true,
     engine: 'InnoDB'
 });
-exports.ProductModel.hasOne(category1_1.Category1Model, {
-    sourceKey: 'productCategoryId1',
-    foreignKey: 'categoryId1'
-});
-exports.ProductModel.hasOne(category2_1.Category2Model, {
-    sourceKey: 'productCategoryId2',
-    foreignKey: 'categoryId2'
-});
-exports.ProductModel.hasOne(category3_1.Category3Model, {
-    sourceKey: 'productCategoryId3',
-    foreignKey: 'categoryId3'
+exports.ProductModel.hasOne(categories_1.CategoryModel, {
+    sourceKey: 'productCategoryId',
+    foreignKey: 'categoryId'
 });

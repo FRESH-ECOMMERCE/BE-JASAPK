@@ -12,8 +12,9 @@ const uuid_1 = require("uuid");
 const axios_1 = __importDefault(require("axios"));
 const requestCheker_1 = require("../../utilities/requestCheker");
 const user_1 = require("../../models/user");
-const waBlasSettings_1 = require("../../models/waBlasSettings");
-const logger_1 = __importDefault(require("../../utilities/logger"));
+const logs_1 = __importDefault(require("../../logs"));
+const requestHandler_1 = require("../../utilities/requestHandler");
+const settings_1 = require("../../models/settings");
 const waBlasSendMessage = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -22,7 +23,6 @@ const waBlasSendMessage = async (req, res) => {
     });
     if (emptyField.length > 0) {
         const message = `invalid request parameter! require (${emptyField})`;
-        logger_1.default.warn(message);
         const response = response_1.ResponseData.error(message);
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
@@ -33,7 +33,6 @@ const waBlasSendMessage = async (req, res) => {
                 userRole: 'user'
             }
         });
-        logger_1.default.info(`Found ${users.length} users to send messages`);
         for (const user of users) {
             if (user.dataValues.userWhatsAppNumber !== null) {
                 const payload = {
@@ -45,30 +44,28 @@ const waBlasSendMessage = async (req, res) => {
                     waBlasHistoryMessage: requestBody.waBlasMessage
                 };
                 try {
-                    const waBlasSettings = await waBlasSettings_1.WaBlasSettingModel.findOne({
+                    const waBlasSettings = await settings_1.SettingModel.findOne({
                         where: {
-                            deleted: { [sequelize_1.Op.eq]: 0 }
+                            deleted: { [sequelize_1.Op.eq]: 0 },
+                            settingType: 'wa_blas'
                         }
                     });
                     console.log(waBlasSettings);
                     if (waBlasSettings === null) {
                         const message = 'periksa pengaturan terlebih dahulu, pastikan semua sudah benar!';
-                        logger_1.default.warn(message);
+                        logs_1.default.warn(message);
                         const response = response_1.ResponseData.error(message);
                         return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(response);
                     }
-                    logger_1.default.info(`Sending message to ${user.dataValues.userWhatsAppNumber}`);
-                    console.log(`${waBlasSettings.waBlasSettingServer}/send-message?phone=${user.dataValues.userWhatsAppNumber}&message=${requestBody.waBlasMessage}&token=${waBlasSettings.waBlasSettingToken}`);
-                    await axios_1.default.get(`${waBlasSettings.waBlasSettingServer}/send-message?phone=${user.dataValues.userWhatsAppNumber}&message=${requestBody.waBlasMessage}&token=${waBlasSettings.waBlasSettingToken}`);
-                    logger_1.default.info(`Message sent successfully to ${user.dataValues.userName}`);
+                    await axios_1.default.get(`${waBlasSettings.waBlasServer}/send-message?phone=${user.dataValues.userWhatsAppNumber}&message=${requestBody.waBlasMessage}&token=${waBlasSettings.waBlasToken}`);
                     payload.waBlasStatus = 'success';
                     await waBlasHistory_1.WaBlasHistoryModel.create(payload);
                 }
                 catch (sendError) {
                     payload.waBlasStatus = 'fail';
-                    logger_1.default.error(sendError.sendError);
+                    logs_1.default.error(sendError.sendError);
                     await waBlasHistory_1.WaBlasHistoryModel.create(payload);
-                    logger_1.default.error(`Failed to send message to ${user.dataValues.userName}`, {
+                    logs_1.default.error(`Failed to send message to ${user.dataValues.userName}`, {
                         error: sendError.message
                     });
                     continue;
@@ -79,11 +76,8 @@ const waBlasSendMessage = async (req, res) => {
         response.data = { message: 'succsess' };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        logger_1.default.error('Unexpected error in waBlasSendMessage', { error: error.message });
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.waBlasSendMessage = waBlasSendMessage;

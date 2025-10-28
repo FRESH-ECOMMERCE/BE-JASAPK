@@ -8,6 +8,8 @@ const requestCheker_1 = require("../../utilities/requestCheker");
 const orders_1 = require("../../models/orders");
 const transactions_1 = require("../../models/transactions");
 const uuid_1 = require("uuid");
+const requestHandler_1 = require("../../utilities/requestHandler");
+const products_1 = require("../../models/products");
 const updateOrder = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -50,14 +52,23 @@ const updateOrder = async (req, res) => {
             transactionOngkirPrice: order.dataValues?.orderOngkirPrice
         };
         await transactions_1.TransactionsModel.create(transactionPayload);
+        const product = await products_1.ProductModel.findOne({
+            where: {
+                deleted: { [sequelize_1.Op.eq]: 0 },
+                productId: { [sequelize_1.Op.eq]: order.orderProductId }
+            }
+        });
+        if (product) {
+            product.productStock = product.productStock - order.orderTotalItem;
+            product.productTotalSale = product.productTotalSale + order.orderTotalItem;
+            await product.save();
+        }
         const response = response_1.ResponseData.default;
         response.data = { message: 'success' };
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
 exports.updateOrder = updateOrder;

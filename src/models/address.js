@@ -43,6 +43,11 @@ exports.AddressesModel = _1.sequelize.define('addresses', {
     addressKecamatan: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
+    },
+    addressCategory: {
+        type: sequelize_1.DataTypes.ENUM('user', 'admin'),
+        allowNull: false,
+        defaultValue: 'user'
     }
 }, {
     ..._1.sequelize,

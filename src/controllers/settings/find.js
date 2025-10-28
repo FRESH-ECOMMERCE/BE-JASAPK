@@ -1,36 +1,86 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findSettings = void 0;
+exports.findSetting = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = require("../../utilities/response");
 const sequelize_1 = require("sequelize");
+const requestHandler_1 = require("../../utilities/requestHandler");
 const settings_1 = require("../../models/settings");
-const logger_1 = __importDefault(require("../../utilities/logger"));
-const findSettings = async (req, res) => {
+const findSetting = async (req, res) => {
     try {
-        const result = await settings_1.SettingsModel.findOne({
-            where: {
-                deleted: { [sequelize_1.Op.eq]: 0 }
+        const { settingType } = req.query ?? {};
+        const whereCondition = {
+            deleted: { [sequelize_1.Op.eq]: 0 }
+        };
+        let attributes = undefined;
+        if (settingType) {
+            whereCondition.settingType = { [sequelize_1.Op.eq]: settingType };
+            switch (settingType) {
+                case 'bank':
+                    attributes = [
+                        'id',
+                        'createdAt',
+                        'updatedAt',
+                        'deleted',
+                        'settingId',
+                        'settingType',
+                        'bankName',
+                        'bankNumber',
+                        'bankOwner'
+                    ];
+                    break;
+                case 'qris':
+                    attributes = [
+                        'id',
+                        'createdAt',
+                        'updatedAt',
+                        'deleted',
+                        'settingId',
+                        'settingType',
+                        'qris'
+                    ];
+                    break;
+                case 'general':
+                    attributes = [
+                        'id',
+                        'createdAt',
+                        'updatedAt',
+                        'deleted',
+                        'settingId',
+                        'settingType',
+                        'banner',
+                        'whatsappNumber'
+                    ];
+                    break;
+                case 'wa_blas':
+                    attributes = [
+                        'id',
+                        'createdAt',
+                        'updatedAt',
+                        'deleted',
+                        'settingId',
+                        'settingType',
+                        'waBlasToken',
+                        'waBlasServer'
+                    ];
+                    break;
+                default:
+                    const message = 'invalid setting type!';
+                    const response = response_1.ResponseData.error(message);
+                    return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
             }
-        });
-        if (result == null) {
-            const message = 'setting not found!';
-            logger_1.default.error(message);
-            const response = response_1.ResponseData.error(message);
-            return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(response);
         }
+        const results = await settings_1.SettingModel.findAll({
+            where: whereCondition,
+            attributes,
+            order: [['id', 'desc']]
+        });
         const response = response_1.ResponseData.default;
-        response.data = result;
+        response.data = results;
         return res.status(http_status_codes_1.StatusCodes.OK).json(response);
     }
-    catch (error) {
-        const message = `unable to process request! error ${error.message}`;
-        logger_1.default.error(message);
-        const response = response_1.ResponseData.error(message);
-        return res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    catch (serverError) {
+        return (0, requestHandler_1.handleServerError)(res, serverError);
     }
 };
-exports.findSettings = findSettings;
+exports.findSetting = findSetting;
