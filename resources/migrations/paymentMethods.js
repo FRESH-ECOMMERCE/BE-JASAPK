@@ -7,36 +7,41 @@ const { ZygoteModel } = require('../zygote')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('settings', {
+    await queryInterface.createTable('payment_methods', {
       ...ZygoteModel,
-      setting_id: {
+      payment_method_id: {
         type: DataTypes.UUID,
         allowNull: false,
         defaultValue: DataTypes.UUIDV4
       },
-      setting_type: {
-        type: DataTypes.ENUM('general', 'wa_blas'),
+      payment_method_type: {
+        type: DataTypes.ENUM('bank', 'qris'),
         allowNull: false
       },
-      banner: {
-        type: DataTypes.JSON,
+      payment_method_bank_name: {
+        type: DataTypes.STRING(50),
         allowNull: true
       },
-      whatsapp_number: {
-        type: DataTypes.STRING,
+      payment_method_bank_number: {
+        type: DataTypes.STRING(100),
         allowNull: true
       },
-      wa_blas_token: {
-        type: DataTypes.STRING,
+      payment_method_bank_owner: {
+        type: DataTypes.STRING(100),
         allowNull: true
       },
-      wa_blas_server: {
+      payment_method_qris: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      payment_method_description: {
         type: DataTypes.STRING,
         allowNull: true
       }
     })
   },
+
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('settings')
+    await queryInterface.dropTable('payment_methods')
   }
 }

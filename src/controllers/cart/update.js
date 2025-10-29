@@ -38,12 +38,6 @@ const updateCart = async (req, res) => {
         const newData = {
             ...(requestBody.cartProductId.length > 0 && {
                 cartProductId: requestBody.cartProductId
-            }),
-            ...(requestBody.cartProductColorSelected.length > 0 && {
-                cartProductColorSelected: requestBody.cartProductColorSelected
-            }),
-            ...(requestBody.cartProductSizeSelected.length > 0 && {
-                cartProductSizeSelected: requestBody.cartProductSizeSelected
             })
         };
         await carts_1.CartsModel.update(newData, {

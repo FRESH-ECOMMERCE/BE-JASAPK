@@ -39,14 +39,6 @@ exports.OrdersModel = _1.sequelize.define('orders', {
         type: sequelize_1.DataTypes.NUMBER,
         allowNull: false
     },
-    orderProductSizeSelected: {
-        type: sequelize_1.DataTypes.STRING(50),
-        allowNull: true
-    },
-    orderProductColorSelected: {
-        type: sequelize_1.DataTypes.STRING(50),
-        allowNull: true
-    },
     orderStatus: {
         type: sequelize_1.DataTypes.ENUM('waiting', 'process', 'delivery', 'done', 'cancel'),
         allowNull: false,

@@ -21,14 +21,6 @@ exports.CartsModel = _1.sequelize.define('carts', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    cartProductColorSelected: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: true
-    },
-    cartProductSizeSelected: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: true
-    },
     cartTotalItem: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,

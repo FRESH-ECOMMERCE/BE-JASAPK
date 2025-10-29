@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false
       },
       product_images: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSON,
         allowNull: false
       },
       product_description: {
@@ -31,15 +31,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 0
       },
-      product_category_id1: {
+      product_category_id: {
         type: DataTypes.STRING(100),
         allowNull: false
       },
-      product_category_id2: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-      },
-      product_category_id3: {
+      product_code: {
         type: DataTypes.STRING(100),
         allowNull: false
       },
@@ -58,25 +54,10 @@ module.exports = {
         allowNull: true,
         defaultValue: 0
       },
-      product_condition: {
-        type: DataTypes.ENUM('Baru', 'Bekas'),
-        allowNull: false,
-        defaultValue: 'Baru'
-      },
       product_discount: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0
-      },
-      product_colors: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: null
-      },
-      product_sizes: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: null
       }
     })
   },

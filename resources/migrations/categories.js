@@ -7,24 +7,24 @@ const { ZygoteModel } = require('../zygote')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('wa_blas_settings', {
+    await queryInterface.createTable('categories', {
       ...ZygoteModel,
-      wa_blas_setting_id: {
+      category_icon: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      category_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         defaultValue: DataTypes.UUIDV4
       },
-      wa_blas_setting_token: {
+      category_name: {
         type: DataTypes.STRING,
-        allowNull: false
-      },
-      wa_blas_setting_server: {
-        type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       }
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable('wa_blas_settings')
+    await queryInterface.dropTable('categories')
   }
 }

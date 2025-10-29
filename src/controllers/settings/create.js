@@ -43,14 +43,6 @@ const createSetting = async (req, res) => {
             settingType: requestBody.settingType
         };
         switch (requestBody.settingType) {
-            case 'bank':
-                newSettingData.bankName = requestBody.bankName ?? null;
-                newSettingData.bankNumber = requestBody.bankNumber ?? null;
-                newSettingData.bankOwner = requestBody.bankOwner ?? null;
-                break;
-            case 'qris':
-                newSettingData.qris = requestBody.qris ?? null;
-                break;
             case 'general':
                 newSettingData.banner = requestBody.banner ?? null;
                 newSettingData.whatsappNumber = requestBody.whatsappNumber ?? null;

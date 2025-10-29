@@ -22,14 +22,6 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false
       },
-      cart_product_color_selected: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      cart_product_size_selected: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       cart_total_item: {
         type: DataTypes.INTEGER,
         allowNull: false,

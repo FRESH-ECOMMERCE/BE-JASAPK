@@ -38,14 +38,6 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      order_product_size_selected: {
-        type: DataTypes.STRING(50),
-        allowNull: true
-      },
-      order_product_color_selected: {
-        type: DataTypes.STRING(50),
-        allowNull: true
-      },
       order_status: {
         type: DataTypes.ENUM('waiting', 'process', 'delivery', 'done', 'cancel'),
         allowNull: false,

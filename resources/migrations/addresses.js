@@ -45,6 +45,11 @@ module.exports = {
       address_kecamatan: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      address_category: {
+        type: DataTypes.ENUM('user', 'admin'),
+        allowNull: false,
+        defaultValue: 'user'
       }
     })
   },

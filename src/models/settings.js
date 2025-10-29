@@ -16,24 +16,8 @@ exports.SettingModel = _1.sequelize.define('settings', {
         defaultValue: (0, sequelize_1.UUIDV4)()
     },
     settingType: {
-        type: sequelize_1.DataTypes.ENUM('bank', 'qris', 'general', 'wa_blas'),
+        type: sequelize_1.DataTypes.ENUM('general', 'wa_blas'),
         allowNull: false
-    },
-    bankName: {
-        type: sequelize_1.DataTypes.STRING(50),
-        allowNull: true
-    },
-    bankNumber: {
-        type: sequelize_1.DataTypes.STRING(100),
-        allowNull: true
-    },
-    bankOwner: {
-        type: sequelize_1.DataTypes.STRING(100),
-        allowNull: true
-    },
-    qris: {
-        type: sequelize_1.DataTypes.TEXT,
-        allowNull: true
     },
     banner: {
         type: sequelize_1.DataTypes.JSON,
