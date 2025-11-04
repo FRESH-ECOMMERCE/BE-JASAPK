@@ -10,24 +10,17 @@ const products_1 = require("../models/products");
 const fileUpload_1 = require("../models/fileUpload");
 const configs_1 = require("../configs");
 const logs_1 = __importDefault(require("../logs"));
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
 new bullmq_1.Worker('product-file-queue', async (job) => {
     const { fileId, filePath } = job.data;
     logs_1.default.info(`[FileWorker]-Processing file upload job for file ID: ${fileId}`);
     await fileUpload_1.FileUploadModel.update({ status: 'PROCESSING' }, { where: { fileId: fileId } });
     try {
-        // Simulasi proses file besar (misalnya 10 detik)
-        console.log(`[WORKER] Simulating heavy processing...`);
-        await sleep(10000 * 2); // 10 detik
+        logs_1.default.info(`[WORKER] Simulating heavy processing...`);
         const workbook = xlsx_1.default.readFile(filePath);
         const sheet = workbook.SheetNames[0];
         const data = xlsx_1.default.utils.sheet_to_json(workbook.Sheets[sheet]);
-        // Simulasi proses baris demi baris (misalnya setiap row 1 detik)
         for (let i = 0; i < data.length; i++) {
-            console.log(`[WORKER] Processing row ${i + 1}/${data.length}`);
-            await sleep(1000);
+            logs_1.default.info(`[WORKER] Processing row ${i + 1}/${data.length}`);
         }
         const products = data.map((item) => ({
             productName: item.nama,
