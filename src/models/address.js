@@ -8,9 +8,10 @@ const zygote_1 = require("./zygote");
 exports.AddressesModel = _1.sequelize.define('addresses', {
     ...zygote_1.ZygoteModel,
     addressId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     addressUserId: {
         type: sequelize_1.DataTypes.STRING,

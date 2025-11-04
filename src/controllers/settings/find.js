@@ -18,7 +18,6 @@ const findSetting = async (req, res) => {
             switch (settingType) {
                 case 'bank':
                     attributes = [
-                        'id',
                         'createdAt',
                         'updatedAt',
                         'deleted',
@@ -31,7 +30,6 @@ const findSetting = async (req, res) => {
                     break;
                 case 'qris':
                     attributes = [
-                        'id',
                         'createdAt',
                         'updatedAt',
                         'deleted',
@@ -42,7 +40,6 @@ const findSetting = async (req, res) => {
                     break;
                 case 'general':
                     attributes = [
-                        'id',
                         'createdAt',
                         'updatedAt',
                         'deleted',
@@ -54,7 +51,6 @@ const findSetting = async (req, res) => {
                     break;
                 case 'wa_blas':
                     attributes = [
-                        'id',
                         'createdAt',
                         'updatedAt',
                         'deleted',
@@ -73,7 +69,7 @@ const findSetting = async (req, res) => {
         const results = await settings_1.SettingModel.findAll({
             where: whereCondition,
             attributes,
-            order: [['id', 'desc']]
+            order: [['settingId', 'desc']]
         });
         const response = response_1.ResponseData.default;
         response.data = results;

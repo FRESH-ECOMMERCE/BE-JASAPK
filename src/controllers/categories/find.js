@@ -16,9 +16,15 @@ const findAllCategory = async (req, res) => {
                 deleted: { [sequelize_1.Op.eq]: 0 },
                 ...(Boolean(req.query.search) && {
                     [sequelize_1.Op.or]: [{ categoryName: { [sequelize_1.Op.like]: `%${req.query.search}%` } }]
+                }),
+                ...(Boolean(req.query.categoryReference) && {
+                    categoryReference: req?.query?.categoryReference
+                }),
+                ...(Boolean(req.query.categoryType) && {
+                    categoryType: req?.query?.categoryType
                 })
             },
-            order: [['id', 'desc']],
+            order: [['categoryId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

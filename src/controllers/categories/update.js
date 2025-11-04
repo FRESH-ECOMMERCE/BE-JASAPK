@@ -34,9 +34,6 @@ const updateCategory = async (req, res) => {
             ...(requestBody.categoryIcon.length > 0 && {
                 categoryIcon: requestBody.categoryIcon
             }),
-            ...(requestBody.categoryId.length > 0 && {
-                categoryId: requestBody.categoryId
-            }),
             ...(requestBody.categoryName.length > 0 && {
                 categoryName: requestBody.categoryName
             })

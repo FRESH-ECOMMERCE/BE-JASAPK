@@ -30,11 +30,7 @@ const updateTransaction = async (req, res) => {
             const response = response_1.ResponseData.error(message);
             return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(response);
         }
-        const newData = {
-            ...(requestBody.transactionId.length > 0 && {
-                transactionId: requestBody.transactionId
-            })
-        };
+        const newData = {};
         await transactions_1.TransactionsModel.update(newData, {
             where: {
                 deleted: { [sequelize_1.Op.eq]: 0 },

@@ -3,12 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ZygoteModel = void 0;
 const sequelize_1 = require("sequelize");
 exports.ZygoteModel = {
-    id: {
-        type: sequelize_1.DataTypes.BIGINT,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
     createdAt: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,

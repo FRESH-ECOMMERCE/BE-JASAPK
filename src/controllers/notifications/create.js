@@ -4,7 +4,6 @@ exports.createNotification = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const uuid_1 = require("uuid");
 const notifications_1 = require("../../models/notifications");
 const expo_server_sdk_1 = require("expo-server-sdk");
 const sequelize_1 = require("sequelize");
@@ -39,7 +38,6 @@ const createNotification = async (req, res) => {
                 });
             }
         }
-        requestBody.notificationId = (0, uuid_1.v4)();
         await notifications_1.NotificationModel.create(requestBody);
         const response = response_1.ResponseData.default;
         const result = { message: 'success' };

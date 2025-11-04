@@ -9,9 +9,10 @@ const products_1 = require("./products");
 exports.CartsModel = _1.sequelize.define('carts', {
     ...zygote_1.ZygoteModel,
     cartId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     cartUserId: {
         type: sequelize_1.DataTypes.STRING,

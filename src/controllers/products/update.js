@@ -30,24 +30,7 @@ const updateProduct = async (req, res) => {
             const response = response_1.ResponseData.error(message);
             return res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json(response);
         }
-        const newData = {
-            ...(requestBody.productName.length > 0 && {
-                productName: requestBody.productName
-            }),
-            ...(requestBody.productDescription.length > 0 && {
-                productDescription: requestBody.productDescription
-            }),
-            ...(requestBody.productImages.length > 0 && {
-                productImages: requestBody.productImages
-            }),
-            ...(requestBody.productPrice !== null && {
-                productPrice: requestBody.productPrice
-            }),
-            ...(requestBody.productCategoryId.length > 0 && {
-                productCategoryId: requestBody.productCategoryId
-            })
-        };
-        await products_1.ProductModel.update(newData, {
+        await products_1.ProductModel.update(requestBody, {
             where: {
                 deleted: { [sequelize_1.Op.eq]: 0 },
                 productId: { [sequelize_1.Op.eq]: requestBody.productId }

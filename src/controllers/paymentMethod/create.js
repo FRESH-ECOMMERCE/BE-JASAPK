@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPaymentMethod = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const uuid_1 = require("uuid");
 const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const requestHandler_1 = require("../../utilities/requestHandler");
@@ -18,7 +17,6 @@ const createPaymentMethod = async (req, res) => {
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response_1.ResponseData.error(message));
     }
     try {
-        requestBody.paymentMethodId = (0, uuid_1.v4)();
         await paymentMethods_1.PaymentMethodModel.create(requestBody);
         const response = response_1.ResponseData.default;
         response.data = { message: 'success' };

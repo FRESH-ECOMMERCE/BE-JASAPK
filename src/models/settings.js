@@ -11,9 +11,10 @@ const zygote_1 = require("./zygote");
 exports.SettingModel = _1.sequelize.define('settings', {
     ...zygote_1.ZygoteModel,
     settingId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     settingType: {
         type: sequelize_1.DataTypes.ENUM('general', 'wa_blas'),

@@ -20,10 +20,13 @@ const findAllProducts = async (req, res) => {
                 }),
                 ...(Boolean(req.query.productCategoryId) && {
                     productCategoryId: { [sequelize_1.Op.eq]: req.query.productCategoryId }
+                }),
+                ...(Boolean(req.query.productSubCategoryId) && {
+                    productSubCategoryId: { [sequelize_1.Op.eq]: req.query.productSubCategoryId }
                 })
             },
             include: [{ model: categories_1.CategoryModel }],
-            order: [['id', 'desc']],
+            order: [['productId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

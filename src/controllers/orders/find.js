@@ -58,7 +58,7 @@ const findAllOrder = async (req, res) => {
                     ]
                 }
             ],
-            order: [['id', 'desc']],
+            order: [['orderId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

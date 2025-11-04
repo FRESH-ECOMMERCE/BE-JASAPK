@@ -8,9 +8,14 @@ const zygote_1 = require("./zygote");
 exports.CategoryModel = _1.sequelize.define('category', {
     ...zygote_1.ZygoteModel,
     categoryId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: true,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    categoryReference: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true
     },
     categoryName: {
         type: sequelize_1.DataTypes.STRING,
@@ -19,6 +24,11 @@ exports.CategoryModel = _1.sequelize.define('category', {
     categoryIcon: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true
+    },
+    categoryType: {
+        type: sequelize_1.DataTypes.ENUM('parent', 'child'),
+        allowNull: false,
+        defaultValue: 'parent'
     }
 }, {
     ..._1.sequelize,

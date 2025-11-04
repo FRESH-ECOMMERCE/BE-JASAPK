@@ -25,7 +25,7 @@ const findAllCart = async (req, res) => {
                     model: products_1.ProductModel
                 }
             ],
-            order: [['id', 'desc']],
+            order: [['cartId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

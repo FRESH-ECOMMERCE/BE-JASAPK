@@ -14,7 +14,6 @@ const findMyProfile = async (req, res) => {
                 userId: { [sequelize_1.Op.eq]: req.body?.user?.userId }
             },
             attributes: [
-                'id',
                 'userId',
                 'userName',
                 'userWhatsAppNumber',

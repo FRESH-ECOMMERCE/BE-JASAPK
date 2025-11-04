@@ -20,8 +20,8 @@ const findAllAdmin = async (req, res) => {
                     [sequelize_1.Op.or]: [{ userName: { [sequelize_1.Op.like]: `%${req.query.search}%` } }]
                 })
             },
-            attributes: ['id', 'userId', 'userName', 'userRole', 'createdAt', 'updatedAt'],
-            order: [['id', 'desc']],
+            attributes: ['userId', 'userName', 'userRole', 'createdAt', 'updatedAt'],
+            order: [['userId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset
@@ -54,7 +54,7 @@ const findDetailAdmin = async (req, res) => {
                 userRole: { [sequelize_1.Op.not]: 'user' },
                 userId: { [sequelize_1.Op.eq]: requestParams.userId }
             },
-            attributes: ['id', 'userId', 'userName', 'userRole', 'createdAt', 'updatedAt']
+            attributes: ['userId', 'userName', 'userRole', 'createdAt', 'updatedAt']
         });
         if (user == null) {
             const message = 'admin not found!';

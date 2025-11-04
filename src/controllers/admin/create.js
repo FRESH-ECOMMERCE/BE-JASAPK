@@ -10,7 +10,6 @@ const response_1 = require("../../utilities/response");
 const user_1 = require("../../models/user");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const scure_password_1 = require("../../utilities/scure_password");
-const uuid_1 = require("uuid");
 const logs_1 = __importDefault(require("../../logs"));
 const requestHandler_1 = require("../../utilities/requestHandler");
 const createAdmin = async (req, res) => {
@@ -39,7 +38,6 @@ const createAdmin = async (req, res) => {
             return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
         }
         requestBody.userPassword = (0, scure_password_1.hashPassword)(requestBody.userPassword);
-        requestBody.userId = (0, uuid_1.v4)();
         await user_1.UserModel.create(requestBody);
         const response = response_1.ResponseData.default;
         response.data = { message: 'success' };

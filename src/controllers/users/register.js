@@ -7,7 +7,6 @@ const response_1 = require("../../utilities/response");
 const user_1 = require("../../models/user");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const scure_password_1 = require("../../utilities/scure_password");
-const uuid_1 = require("uuid");
 const generateUniqueId_1 = require("../../utilities/generateUniqueId");
 const requestHandler_1 = require("../../utilities/requestHandler");
 const userRegister = async (req, res) => {
@@ -37,7 +36,6 @@ const userRegister = async (req, res) => {
         requestBody.userPassword = (0, scure_password_1.hashPassword)(requestBody.userPassword);
         requestBody.userPartnerCode =
             (0, generateUniqueId_1.generateUniqueId)() + '-' + requestBody.userWhatsAppNumber;
-        requestBody.userId = (0, uuid_1.v4)();
         await user_1.UserModel.create(requestBody);
         const response = response_1.ResponseData.default;
         response.data = { message: 'success' };

@@ -36,7 +36,7 @@ const findAllTransaction = async (req, res) => {
                 },
                 { model: orders_1.OrdersModel }
             ],
-            order: [['id', 'desc']],
+            order: [['transactionId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

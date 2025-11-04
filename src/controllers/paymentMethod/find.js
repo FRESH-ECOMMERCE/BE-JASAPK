@@ -21,7 +21,7 @@ const findAllPaymentMethods = async (req, res) => {
                     ]
                 })
             },
-            order: [['id', 'desc']],
+            order: [['paymentMethodId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

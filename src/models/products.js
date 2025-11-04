@@ -9,9 +9,10 @@ const categories_1 = require("./categories");
 exports.ProductModel = _1.sequelize.define('products', {
     ...zygote_1.ZygoteModel,
     productId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     productName: {
         type: sequelize_1.DataTypes.STRING,
@@ -31,7 +32,11 @@ exports.ProductModel = _1.sequelize.define('products', {
     },
     productCategoryId: {
         type: sequelize_1.DataTypes.STRING(100),
-        allowNull: false
+        allowNull: true
+    },
+    productSubCategoryId: {
+        type: sequelize_1.DataTypes.STRING(100),
+        allowNull: true
     },
     productCode: {
         type: sequelize_1.DataTypes.STRING(100),

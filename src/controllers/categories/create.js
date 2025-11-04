@@ -6,7 +6,6 @@ const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
 const categories_1 = require("../../models/categories");
 const requestHandler_1 = require("../../utilities/requestHandler");
-const uuid_1 = require("uuid");
 const createCategory = async (req, res) => {
     const requestBody = req.body;
     const emptyField = (0, requestCheker_1.requestChecker)({
@@ -19,11 +18,11 @@ const createCategory = async (req, res) => {
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
     try {
-        requestBody.categoryId = (0, uuid_1.v4)();
         await categories_1.CategoryModel.create(requestBody);
         const response = response_1.ResponseData.default;
-        const result = { message: 'success' };
-        response.data = result;
+        response.data = {
+            message: 'success'
+        };
         return res.status(http_status_codes_1.StatusCodes.CREATED).json(response);
     }
     catch (serverError) {

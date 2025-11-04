@@ -4,7 +4,6 @@ exports.createOrder = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const uuid_1 = require("uuid");
 const orders_1 = require("../../models/orders");
 const products_1 = require("../../models/products");
 const sequelize_1 = require("sequelize");
@@ -48,7 +47,6 @@ const createOrder = async (req, res) => {
         requestBody.orderTotalProductPrice =
             product?.productPrice + requestBody.orderOngkirPrice;
         requestBody.orderUserId = req.body?.user?.userId;
-        requestBody.orderId = (0, uuid_1.v4)();
         await orders_1.OrdersModel.create(requestBody);
         await carts_1.CartsModel.destroy({
             where: {

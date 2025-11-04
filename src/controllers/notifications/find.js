@@ -18,7 +18,7 @@ const findAllNotification = async (req, res) => {
                     [sequelize_1.Op.or]: [{ notificationName: { [sequelize_1.Op.like]: `%${req.query.search}%` } }]
                 })
             },
-            order: [['id', 'desc']],
+            order: [['notificationId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

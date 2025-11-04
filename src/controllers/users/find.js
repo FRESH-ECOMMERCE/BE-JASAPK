@@ -24,7 +24,6 @@ const findAllUser = async (req, res) => {
                 })
             },
             attributes: [
-                'id',
                 'userId',
                 'userName',
                 'userWhatsAppNumber',
@@ -34,7 +33,7 @@ const findAllUser = async (req, res) => {
                 'createdAt',
                 'updatedAt'
             ],
-            order: [['id', 'desc']],
+            order: [['userId', 'desc']],
             ...(req.query.pagination === 'true' && {
                 limit: page.limit,
                 offset: page.offset

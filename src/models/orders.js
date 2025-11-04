@@ -11,9 +11,10 @@ const address_1 = require("./address");
 exports.OrdersModel = _1.sequelize.define('orders', {
     ...zygote_1.ZygoteModel,
     orderId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     orderUserId: {
         type: sequelize_1.DataTypes.STRING,

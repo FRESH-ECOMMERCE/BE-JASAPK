@@ -4,7 +4,6 @@ exports.createAddress = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const uuid_1 = require("uuid");
 const address_1 = require("../../models/address");
 const requestHandler_1 = require("../../utilities/requestHandler");
 const createAddress = async (req, res) => {
@@ -54,7 +53,6 @@ const createAddress = async (req, res) => {
         }
         else {
             const newAddress = {
-                addressId: (0, uuid_1.v4)(),
                 addressUserId: userId,
                 addressUserName: requestBody.addressUserName,
                 addressKontak: requestBody.addressKontak,

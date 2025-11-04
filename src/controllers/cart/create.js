@@ -4,7 +4,6 @@ exports.createCart = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const response_1 = require("../../utilities/response");
 const requestCheker_1 = require("../../utilities/requestCheker");
-const uuid_1 = require("uuid");
 const carts_1 = require("../../models/carts");
 const requestHandler_1 = require("../../utilities/requestHandler");
 const createCart = async (req, res) => {
@@ -19,7 +18,6 @@ const createCart = async (req, res) => {
         return res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json(response);
     }
     try {
-        requestBody.cartId = (0, uuid_1.v4)();
         requestBody.cartUserId = req.body?.user?.userId;
         await carts_1.CartsModel.create(requestBody);
         const response = response_1.ResponseData.default;

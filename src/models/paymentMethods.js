@@ -11,9 +11,10 @@ const zygote_1 = require("./zygote");
 exports.PaymentMethodModel = _1.sequelize.define('PaymentMethod', {
     ...zygote_1.ZygoteModel,
     paymentMethodId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     paymentMethodType: {
         type: sequelize_1.DataTypes.ENUM('bank', 'qris'),

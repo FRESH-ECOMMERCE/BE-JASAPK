@@ -12,14 +12,14 @@ const zygote_1 = require("./zygote");
 exports.WaBlasHistoryModel = _1.sequelize.define('wa_blas_history', {
     ...zygote_1.ZygoteModel,
     waBlasHistoryId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        type: sequelize_1.DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
     },
     waBlasHistoryUserId: {
         type: sequelize_1.DataTypes.UUID,
-        allowNull: false,
-        defaultValue: (0, sequelize_1.UUIDV4)()
+        allowNull: false
     },
     waBlasHistoryUserName: {
         type: sequelize_1.DataTypes.STRING(100),
